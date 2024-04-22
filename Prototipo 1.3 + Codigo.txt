@@ -1,0 +1,117 @@
+
+
+### Componentes:
+
+1. **Arduino Uno**: Es una placa con microcontrolador para construir prototipos electrónicos.
+2. **Batería de 9V**: Fuente de energía portátil para tu proyecto.
+3. **Protoboard (Breadboard)**: Tablero para hacer circuitos sin soldaduras.
+4. **Controlador L298N**: Una tarjeta que ayuda a controlar los motores.
+5. **Joystick**: Palanca de mando que tiene dos ejes para controlar movimientos.
+6. **2 Motores DC N20**: Motores pequeños para hacer girar partes de tu grúa.
+
+### Conexiones Paso a Paso:
+
+#### Tinkercad
+
+1. **Agrega los Componentes**:
+   - Abre Tinkercad y crea un nuevo circuito.
+   - Busca cada uno de los componentes en la librería de Tinkercad y colócalos en el área de trabajo.
+
+2. **Conecta el Arduino**:
+   - Encuentra los pines A0 y A1 en el Arduino y conéctalos con cables al joystick para leer los movimientos.
+   - A0 va al eje X y A1 al eje Y del joystick.
+   - Conecta el +5V y GND del Arduino a las líneas de alimentación de la protoboard.
+
+3. **Conecta el Controlador L298N**:
+   - **Motor A** a OUT1 y OUT2.
+   - **Motor B** a OUT3 y OUT4.
+   - **+12V** al polo positivo de la batería de 9V (será menos voltaje pero suele funcionar para pequeños motores).
+   - **GND** al GND común en la protoboard.
+   - Si tienes el jumper puesto, el L298N alimentará al Arduino a través del pin +5V, pero es mejor usar la batería de 9V solo para el L298N y otra fuente de alimentación para el Arduino si es posible.
+
+4. **Conecta los Motores al L298N**:
+   - Los cables del Motor A van a OUT1 y OUT2.
+   - Los cables del Motor B van a OUT3 y OUT4.
+
+5. **Programa el Arduino**:
+   - Escribe el código para controlar los motores con el joystick y súbelo al Arduino.
+
+#### En la Vida Real
+
+1. **Prepara el Área de Trabajo**:
+   - Asegúrate de tener una mesa limpia y ordenada.
+
+2. **Reúne los Componentes**:
+   - Ten a la mano tu Arduino Uno, batería de 9V, protoboard, controlador L298N, joystick, y motores N20.
+
+3. **Conecta los Componentes**:
+   - Sigue los mismos pasos que en Tinkercad, pero usando cables reales.
+   - Ten cuidado de conectar bien los cables al L298N, respetando la polaridad (+ y -).
+   - Utiliza cinta aislante o soportes para evitar cortocircuitos.
+
+4. **Alimentación**:
+   - Conecta primero el Arduino a su fuente de alimentación.
+   - Luego, conecta la batería al L298N.
+
+5. **Revisión**:
+   - Antes de encender nada, revisa todas las conexiones dos veces para asegurarte de que estén correctas.
+
+6. **Enciende y Prueba**:
+   - Enciende el Arduino y verifica que el joystick controla los motores como esperas.
+
+### Código de Arduino:
+
+Aquí tienes un código de ejemplo para controlar los dos motores con el joystick:
+
+```cpp
+// Definición de los pines para el controlador L298N
+const int motorAPin1 = 2;
+const int motorAPin2 = 3;
+const int motorBPin1 = 4;
+const int motorBPin2 = 5;
+
+// Pines del joystick
+const int joystickX = A0;
+const int joystickY = A1;
+
+void setup() {
+  // Configura los pines del motor como salidas
+  pinMode(motorAPin1, OUTPUT);
+  pinMode(motorAPin2, OUTPUT);
+  pinMode(motorBPin1, OUTPUT);
+  pinMode(motorBPin2
+
+, OUTPUT);
+}
+
+void loop() {
+  int xValue = analogRead(joystickX); // Lee el valor X del joystick
+  int yValue = analogRead(joystickY); // Lee el valor Y del joystick
+
+  // Control para el motor A (horizontal)
+  if (xValue < 512) {
+    digitalWrite(motorAPin1, LOW);
+    digitalWrite(motorAPin2, HIGH);
+  } else if (xValue > 512) {
+    digitalWrite(motorAPin1, HIGH);
+    digitalWrite(motorAPin2, LOW);
+  } else {
+    digitalWrite(motorAPin1, LOW);
+    digitalWrite(motorAPin2, LOW);
+  }
+
+  // Control para el motor B (vertical)
+  if (yValue < 512) {
+    digitalWrite(motorBPin1, LOW);
+    digitalWrite(motorBPin2, HIGH);
+  } else if (yValue > 512) {
+    digitalWrite(motorBPin1, HIGH);
+    digitalWrite(motorBPin2, LOW);
+  } else {
+    digitalWrite(motorBPin1, LOW);
+    digitalWrite(motorBPin2, LOW);
+  }
+}
+```
+
+Recuerda que la programación y la construcción de circuitos puede requerir ajustes y pruebas. Siempre prueba primero en Tinkercad y cuando todo funcione como esperas, procede en la vida real con mucho cuidado. ¡Buena suerte con tu proyecto de grúa!
